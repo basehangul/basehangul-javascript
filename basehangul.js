@@ -26,11 +26,11 @@ exports.decode = function decode(basehangulString) {
         result.push((a >> 2) & 255);
         if (b === -1) break;
         result.push((a & 3) << 6 | b >> 4);
-        if (b === -1) break;
+        if (b === -1 || c === -1) break;
         result.push((b & 15) << 4 | c >> 6);
-        if (c === -1) break;
+        if (c === -1 || d === -1) break;
         result.push((c & 63) << 2 | (d > 1023 ? d & 3: d >> 8));
-        if (d === -1 || d > 1023) break;
+        if (d > 1023) break;
         result.push(d & 255);
     }
     return result;
