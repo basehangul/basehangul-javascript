@@ -15,17 +15,29 @@ function encode(bytearray) {
     return result.join('');
 }
 
-var sample = 'This is an encoded string'.split('').map(function (character) { return character.charCodeAt(); });
-console.log(encode(sample));
-
-var ex1 = [49, 50, 51, 97, 98];
-var ex2 = [49];
-var ex3 = [49, 50, 51, 100];
-
-console.log(encode(ex1));
-console.log(encode(ex2));
-console.log(encode(ex3));
-
 function decode(basehangulString) {
-    // TODO
+    var baseData = basehangulString.split('').map(function (character) { return ksx1001_1028.indexOf(character); });
+    var len = baseData.length;
+    var a, b, c, d, result = [];
+    for (var i = 0; i < len; ++i) {
+        a = baseData[i]; b = baseData[++i]; c = baseData[++i]; d = baseData[++i];
+        result.push((a >> 2) & 255);
+        if (b === -1) break;
+        result.push((a & 3) << 6 | b >> 4);
+        if (b === -1) break;
+        result.push((b & 15) << 4 | c >> 6);
+        if (c === -1) break;
+        result.push((c & 63) << 2 | (d > 1023 ? d & 3: d >> 8));
+        if (d === -1 || d > 1023) break;
+        result.push(d & 255);
+    }
+    return result;
 }
+
+console.log(decode(encode([49, 50, 51, 97, 98])));
+console.log(decode(encode([49])));
+console.log(decode(encode([49, 50, 51, 100])));
+
+console.log(decode('넥라똔먈늴멥갯놓궂뗐밸뮤뉴뗐뀄굡덜멂똑뚤').map(function (byte) {
+    return String.fromCharCode(byte);
+}).join(''));
