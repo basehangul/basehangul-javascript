@@ -36,4 +36,6 @@ exports.decode = function decode(basehangulString) {
     return result;
 }
 
+return exports;
+
 })(typeof module !== 'undefined' ? module.exports : {});
